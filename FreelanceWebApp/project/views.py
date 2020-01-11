@@ -4,7 +4,6 @@ from django.db.models import Q
 from django.contrib import messages
 from user.forms import CreateForm
 from .models import Project
-<<<<<<< HEAD
 from project.paginations import pagination
 
 # Create your views here.
@@ -25,28 +24,6 @@ def project(request):
         return render(request, template, context)
     else:
         return redirect('message:welcome')
-=======
-
-
-# Create your views here.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> 10cee513b7c7da0c61495fc81581da8a74450a24
 
 def details(request, project_id):
     template = "details.html"
@@ -62,7 +39,6 @@ def details(request, project_id):
         return render(request, template, context)
     else:
         return redirect('welcome')
-<<<<<<< HEAD
 
 def search(request):
     template = "project.html"
@@ -82,8 +58,6 @@ def search(request):
         return render(request, template, context)
     else:
         return redirect('message:welcome')
-=======
->>>>>>> 10cee513b7c7da0c61495fc81581da8a74450a24
     
 def create(request):
     if request.method == "POST":
@@ -127,10 +101,7 @@ def update_db(request, project_id):
     messages.success(request, f'Post updated.')
     return redirect('project:project')
     
-<<<<<<< HEAD
 
-=======
->>>>>>> 10cee513b7c7da0c61495fc81581da8a74450a24
 def delete(request, project_id):
     project_obj = Project.objects.get(pk = project_id)
     uid = request.user.id
