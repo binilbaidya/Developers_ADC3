@@ -1,0 +1,28 @@
+{% extends "main/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<title>Update Project</title>
+<a href="../{{ project.project_id }}" class="btn btn-light btn-sm mb-4">Go Back</a>
+<form method="POST" action="update/{{ project.project_id }}">
+    {% csrf_token %}
+        <div class="form-group">
+            <label for="title">Update Project Title</label>
+            <input type="text" class="form-control" name = "title"
+                value={{project.project_title}}>
+        </div>
+        <div class="form-group">
+            <label for="description">Update Project Description</label>
+            <input type="text-area" class="form-control" name = "description"
+                value={{project.project_description}}>
+        </div>
+        <div class="form-group">
+            <label for="title">Update Project Type</label>
+            <input type="text" class="form-control" name="pr_type" value={{project.project_type}}>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
+{% endblock %}
