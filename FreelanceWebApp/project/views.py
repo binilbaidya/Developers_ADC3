@@ -4,6 +4,28 @@ from django.db.models import Q
 from django.contrib import messages
 from user.forms import CreateForm
 from .models import Project
+<<<<<<< HEAD
+from project.paginations import pagination
+
+# Create your views here.
+
+def project(request):
+
+    template = "project.html"
+    object_list = Project.objects.filter(project_status__contains=1).order_by('-project_time')
+
+    pages = pagination(request, object_list, 2)
+
+    context={
+        'items': pages[0],
+        'page_range': pages[1],
+        'nbar': 'project',
+    }
+    if request.user.is_authenticated:
+        return render(request, template, context)
+    else:
+        return redirect('message:welcome')
+=======
 
 
 # Create your views here.
@@ -24,6 +46,7 @@ from .models import Project
 
 
 
+>>>>>>> 10cee513b7c7da0c61495fc81581da8a74450a24
 
 def details(request, project_id):
     template = "details.html"
@@ -39,6 +62,28 @@ def details(request, project_id):
         return render(request, template, context)
     else:
         return redirect('welcome')
+<<<<<<< HEAD
+
+def search(request):
+    template = "project.html"
+    query = request.GET.get('q')
+    if query:
+        results = Project.objects.filter(Q(project_title__icontains=query) | Q(project_description__icontains=query))
+    else:
+        results = Project.objects.filter(project_status__contains=1)
+    pages = pagination(request, results, 1)
+    context = {
+        'items': pages[0], 
+        'page_range': pages[1],
+        'query': query,
+        'nbar': 'project',
+    }
+    if request.user.is_authenticated:
+        return render(request, template, context)
+    else:
+        return redirect('message:welcome')
+=======
+>>>>>>> 10cee513b7c7da0c61495fc81581da8a74450a24
     
 def create(request):
     if request.method == "POST":
@@ -82,6 +127,10 @@ def update_db(request, project_id):
     messages.success(request, f'Post updated.')
     return redirect('project:project')
     
+<<<<<<< HEAD
+
+=======
+>>>>>>> 10cee513b7c7da0c61495fc81581da8a74450a24
 def delete(request, project_id):
     project_obj = Project.objects.get(pk = project_id)
     uid = request.user.id
