@@ -1,0 +1,20 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<title>Project Details</title>
+
+<a href="/project" class="btn btn-light btn-sm mb-4">Go Back</a>
+<h1>{{details.project_title}}</h1>
+<div>
+    {{details.project_description}}
+</div>
+<hr>
+<small>Written on {{details.project_time}} by {{details.username}}</small>
+<hr>
+
+{% if details.user == user %}
+	<a href="edit/{{details.project_id}}"><button class="btn btn-primary">Edit</button></a>
+	<a href="delete/{{details.project_id}}"><button class="btn btn-danger float-right">Delete</button></a>
+{% endif %}
+
+{% endblock %}

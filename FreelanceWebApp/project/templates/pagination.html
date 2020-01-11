@@ -1,0 +1,27 @@
+{% if items.has_other_pages %}
+<div class="text-center">
+    <div class="offset-5 text-center pagination">
+        <nav>
+            <ul class="pagination" style="justify-content: center;">
+                {% if items.has_previous %}
+                    <li class="page-item"><a href="?page={{ items.previous_page_number }}{% if query %}&q={{query}}{% endif %}" class="page-link">&laquo;</a></li>
+                {% else %}
+                    <li class="page-item disabled"><a href="#" class="page-link">&laquo;</a></li>
+                {% endif %}
+                {% for i in page_range %}
+                    {% if items.number == i %}
+                        <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ i }}{% if query %}&q={{query}}{% endif %}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if items.has_next %}
+                    <li class="page-item"><a href="?page={{ items.next_page_number }}{% if query %}&q={{query}}{% endif %}" class="page-link">&raquo;</a></li>
+                {% else %}
+                    <li class="page-item disabled"><a href="#" class="page-link">&raquo;</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+{% endif %}
