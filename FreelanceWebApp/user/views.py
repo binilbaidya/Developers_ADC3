@@ -8,33 +8,33 @@ from project.views import Project
 
 # Create your views here.
 
+def register(request):
+    if request.method == "POST":
+        form = Form(request.POST)
+        appuser_form = AppUserForm(request.POST)
+        if form.is_valid() and appuser_form.is_valid():
+            user = form.save()
+            
+            appuser = appuser_form.save(commit=False)
+            appuser.user = user
+            
+            appuser.save()
+            username = form.cleaned_data.get('username')
+            login(request, user)
+            messages.success(request, f'Account created successfully for { username }!')
+            return redirect('project:project')
+    else:
+        form = Form()
+        appuser_form = AppUserForm()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    context={
+        "form": form,
+        "appuser_form": appuser_form
+    }
+    if request.user.is_authenticated:
+        return redirect('project:project')
+    else:
+        return render(request, "register.html", context)
 
 def user_logout(request):
     logout(request)
