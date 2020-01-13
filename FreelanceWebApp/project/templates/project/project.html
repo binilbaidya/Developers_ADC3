@@ -1,10 +1,10 @@
-{% extends "main/base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 
 <title>Project</title>
 
-<a href="create/" class="btn btn-primary btn-sm mb-3">Create Post</a> 
+<a href="create/" class="btn btn-primary btn-sm mb-3">Create Post</a>
 <div class="row">
     <div class="col-md-8">
         {% for p in items %}
@@ -33,10 +33,10 @@
         </div>
         <br>
         {% endfor %}
-    
-        {% include 'pagination.html' %}
+
+        {% include 'project/pagination.html' %}
     </div>
-    {% include 'search.html' %}
+    {% include 'project/search.html' %}
 </div>
 
 {% endblock %}

@@ -4,7 +4,7 @@ from .models import Message
 # Create your views here.
 
 def welcome(request):
-    return render(request, 'main/welcome.html')
+    return render(request, 'message/welcome.html')
 
 def message(request):
     if request.user.is_authenticated:

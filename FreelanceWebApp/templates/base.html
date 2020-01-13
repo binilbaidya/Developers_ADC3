@@ -12,7 +12,7 @@
 </head>
 <body>
 
-    {% include "main/navbar.html" %}
+    {% include "navbar.html" %}
 
 
     <div class="container">
@@ -23,8 +23,10 @@
                 </div>
             {% endfor %}
         {% endif %}
-        {% block content %}{% endblock %}
+
+        {% block content %}
+        {% endblock %}
     </div>
-    
+
 </body>
 </html>

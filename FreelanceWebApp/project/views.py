@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.db.models import Q
 from django.contrib import messages
-from user.forms import CreateForm
+from project.forms import Form
 from .models import Project
 from project.paginations import pagination
 
@@ -10,7 +10,7 @@ from project.paginations import pagination
 
 def project(request):
 
-    template = "project.html"
+    template = "project/project.html"
     object_list = Project.objects.filter(project_status__contains=1).order_by('-project_time')
 
     pages = pagination(request, object_list, 2)
@@ -26,7 +26,7 @@ def project(request):
         return redirect('message:welcome')
 
 def details(request, project_id):
-    template = "details.html"
+    template = "project/details.html"
     try:
         details = Project.objects.get(pk=project_id)
     except Project.DoesNotExist:
@@ -41,7 +41,7 @@ def details(request, project_id):
         return redirect('welcome')
 
 def search(request):
-    template = "project.html"
+    template = "project/project.html"
     query = request.GET.get('q')
     if query:
         results = Project.objects.filter(Q(project_title__icontains=query) | Q(project_description__icontains=query))
@@ -49,7 +49,7 @@ def search(request):
         results = Project.objects.filter(project_status__contains=1)
     pages = pagination(request, results, 1)
     context = {
-        'items': pages[0], 
+        'items': pages[0],
         'page_range': pages[1],
         'query': query,
         'nbar': 'project',
@@ -58,10 +58,10 @@ def search(request):
         return render(request, template, context)
     else:
         return redirect('message:welcome')
-    
+
 def create(request):
     if request.method == "POST":
-        create_form = CreateForm(request.POST)
+        create_form = Form(request.POST)
         if create_form.is_valid():
             cform = create_form.save(commit=False)
             cform.user = request.user
@@ -69,12 +69,12 @@ def create(request):
             messages.success(request, f'Post successfully created!')
             return redirect('project:project')
     else:
-        create_form = CreateForm()
+        create_form = Form()
     context={
         "create_form": create_form
     }
     if request.user.is_authenticated:
-        return render(request, 'create.html', context)
+        return render(request, 'project/create.html', context)
     else:
         return redirect('user:login')
 
@@ -87,7 +87,7 @@ def update(request, project_id):
     uid = request.user.id
     pid = project_obj.user_id
     if uid == pid:
-        return render(request, 'update.html', context)
+        return render(request, 'project/update.html', context)
     else:
         return redirect('project:project')
 
@@ -100,7 +100,7 @@ def update_db(request, project_id):
     project_obj.save()
     messages.success(request, f'Post updated.')
     return redirect('project:project')
-    
+
 
 def delete(request, project_id):
     project_obj = Project.objects.get(pk = project_id)
