@@ -1,19 +1,19 @@
 from django.test import TestCase
-from payment.models import Payment
-from user.models import AppUser
+from project.models import Project
 from django.core.files.base import ContentFile
+from django.contrib.auth.models import User
 
 # Create your tests here.
 
-class PaymentTest(TestCase):
+class ProjectTest(TestCase):
 
     def setUp(self):
-        AppUser.objects.create(phone=93123213,upload_cv=ContentFile('test'))
-        Payment.objects.create(payment_id=None,user_id=1,payment_amount=100,payment_details="for web project")
-        Payment.objects.create(payment_id=None,user_id=1,payment_amount=200,payment_details="for game project")
+        User.objects.create_user(username='john', email='jlennon@beatles.com', password='glass onion')
+        Project.objects.create(project_id=1,project_title="designing",project_description="This is designing project",project_status=True, project_type="designing",user_id=1)
+        Project.objects.create(project_id=2,project_title="game development",project_description="This is game development project",project_status=True, project_type="game development",user_id=1)
 
-    def test_payment(self):
-        p1 = Payment.objects.get(payment_details='for web project')
-        p2 = Payment.objects.get(payment_details='for game project')
-        self.assertEqual(p1.payment_details,"for web project")
-        self.assertEqual(p2.payment_details,"for system project")
+    def test_project(self):
+        p1 = Project.objects.get(project_title='designing')
+        p2 = Project.objects.get(project_title='game development')
+        self.assertEqual(p1.project_title,"designing")
+        self.assertEqual(p2.project_title,"game")
