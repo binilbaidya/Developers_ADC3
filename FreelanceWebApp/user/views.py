@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
-from .forms import Form
+from .forms import Form,UserForm
 from django.contrib import messages
 from .models import AppUser
 from project.views import Project
@@ -10,26 +10,26 @@ from project.views import Project
 
 def register(request):
     if request.method == "POST":
-        form = Form(request.POST,request.FILES)
+        form = Form(request.POST)
+        userform = UserForm(request.POST,request.FILES)
         if form.is_valid():
             user = form.save()
             # # user = form.save()
+            appuser = userform.save(commit=False)
+            appuser.user = user
 
-            # # appuser = appuser_form.save(commit=False)
-            # # appuser.user = user
-
-            # # appuser.save()
-            # # username = form.cleaned_data.get('username')
-            # login(request, user)
-            # messages.success(request, f'Account created successfully for { username }!')
+            appuser.save()
+            username = form.cleaned_data.get('username')
+            login(request, user)
+            messages.success(request, f'Account created successfully for { username }!')
             return redirect('project:project')
     else:
         form = Form()
-        # appuser_form = AppUserForm()
+        appuser_form = UserForm()
 
     context={
-        "form": form
-        # "appuser_form": appuser_form
+        "form": form,
+        "appuser_form": appuser_form
     }
     if request.user.is_authenticated:
         return redirect('project:project')
