@@ -3,11 +3,11 @@ from user.models import AppUser
 from django.contrib.auth.models import User
 # from project.models import Project
 
-class Form(forms.ModelForm):
+class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name','username','email']
+        fields = ['first_name', 'last_name','username','email','password']
     # def save(self, commit=True):
     #     user = super().save(commit=False)
     #     user.first_name = self.cleaned_data['first_name']
@@ -17,7 +17,7 @@ class Form(forms.ModelForm):
     #             user.save()
     #     return user
 
-class UserForm(forms.ModelForm):
+class ProfileForm(forms.ModelForm):
     class Meta:
         model = AppUser
         fields = ['phone', 'cv']
@@ -25,3 +25,4 @@ class UserForm(forms.ModelForm):
 #     class Meta:
 #         model = Project
 #         fields = ('project_title', 'project_description', 'project_type')
+

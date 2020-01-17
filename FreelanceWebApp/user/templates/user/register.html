@@ -9,8 +9,8 @@
         {% csrf_token %}
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">Register</legend>
-            {{ form|crispy }}
-            {{ appuser_form|crispy }}
+            {{ user_form|crispy }}
+            {{ profile_form|crispy }}
             <button type="submit" class="btn btn-outline-info">Sign Up</button>
         </fieldset>
     </form>

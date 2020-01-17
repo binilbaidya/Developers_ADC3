@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
-from .forms import Form,UserForm
+from .forms import UserForm, ProfileForm
 from django.contrib import messages
 from .models import AppUser
 from project.views import Project
@@ -10,31 +10,30 @@ from project.views import Project
 
 def register(request):
     if request.method == "POST":
-        form = Form(request.POST)
-        userform = UserForm(request.POST,request.FILES)
-        if form.is_valid():
-            user = form.save()
+        user_form = UserForm(request.POST)
+        profile_form = ProfileForm(request.POST,request.FILES)
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
             # # user = form.save()
-            appuser = userform.save(commit=False)
+            appuser = profile_form.save(commit=False)
             appuser.user = user
-
             appuser.save()
-            username = form.cleaned_data.get('username')
+            username = user_form.cleaned_data.get('username')
             login(request, user)
             messages.success(request, f'Account created successfully for { username }!')
             return redirect('project:project')
     else:
-        form = Form()
-        appuser_form = UserForm()
+        user_form = UserForm()
+        profile_form = ProfileForm()
 
     context={
-        "form": form,
-        "appuser_form": appuser_form
+        "user_form": user_form,
+        "profile_form": profile_form
     }
     if request.user.is_authenticated:
         return redirect('project:project')
     else:
-        return render(request, "register.html", context)
+        return render(request, "user/register.html", context)
 
 def user_logout(request):
     logout(request)
@@ -57,4 +56,35 @@ def user_login(request):
     if request.user.is_authenticated:
         return redirect('project:project')
     else:
-        return render(request, 'login.html', context={"form": form})
+        return render(request, 'user/login.html', context={"form": form})
+
+def view_profile(request):
+    other = AppUser.objects.get(user=request.user)
+    context = {
+        "user":request.user,
+        "other":other
+          }
+    return render(request,'user/view_profile.html',context)
+
+def edit_profile(request):
+    post_data = request.POST or None
+    file_data = request.FILES or None
+    app_user = AppUser.objects.get(user=request.user)
+    user_form = UserForm(post_data, instance=request.user)
+    profile_form = ProfileForm(post_data,file_data, instance=app_user)
+    if user_form.is_valid and profile_form.is_valid():
+        user_form.save()
+        profile_form.save()
+        return redirect("user:view_profile")
+
+    context={
+        "user_form": user_form,
+        "profile_form": profile_form
+    }
+    return render(request, 'user/edit_profile.html',context)
+
+def delete_profile(request,pk):
+    profile = AppUser.objects.get(pk=pk)
+    profile.delete()
+    logout(request)
+    return redirect('user:register')
