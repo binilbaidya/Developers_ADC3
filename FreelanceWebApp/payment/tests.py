@@ -1,14 +1,14 @@
 from django.test import TestCase
 from payment.models import Payment
-from user.models import AppUser
+from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
-
+from django.utils import timezone
 # Create your tests here.
 
 class PaymentTest(TestCase):
 
     def setUp(self):
-        AppUser.objects.create(phone=93123213,upload_cv=ContentFile('test'))
+        User.objects.create_user(username='john', email='jlennon@beatles.com', password='glass onion')
         Payment.objects.create(payment_id=None,user_id=1,payment_amount=100,payment_details="for web project")
         Payment.objects.create(payment_id=None,user_id=1,payment_amount=200,payment_details="for game project")
 

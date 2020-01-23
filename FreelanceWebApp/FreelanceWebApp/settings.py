@@ -31,10 +31,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'user',
-    'project',
-    'message',
-    'payment',
+    'user.apps.UserConfig',
+    'project.apps.ProjectConfig',
+    'message.apps.MessageConfig',
+    'payment.apps.WebConfig',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -59,7 +59,7 @@ ROOT_URLCONF = 'FreelanceWebApp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -131,3 +131,6 @@ STATICFILES_DIRS = (
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/cv/'
