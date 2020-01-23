@@ -15,7 +15,10 @@
 {% if details.user == user %}
 <a href="edit/{{details.project_id}}"><button class="btn btn-primary float-left mr-3">Edit</button></a>
 <a href="bids/{{details.project_id}}"><button class="btn btn-primary float-left">Bids</button></a>
-<a href="delete/{{details.project_id}}"><button class="btn btn-danger float-right">Delete</button></a>
+<form action="{% url 'project:delete' details.pk %}" action="POST">
+	{% csrf_token %}
+	<button class="btn btn-danger float-right">Delete</button>
+</form>
 {% else %}
 <a href="add-bids/{{details.project_id}}"><button class="btn btn-success float-right run">Apply for this
 		Project</button></a>
