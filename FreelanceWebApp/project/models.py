@@ -15,3 +15,10 @@ class Project(models.Model):
 
     def __str__(self):
         return self.project_title
+
+class Bid(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    bid_status = models.BooleanField(default=True)
+    bid_time = models.DateTimeField(auto_now_add=True)
+    
