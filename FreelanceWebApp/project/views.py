@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.db.models import Q
 from django.contrib import messages
 from project.forms import Form
-from .models import Project
+from .models import Project, Bid
 from project.paginations import pagination
 
 # Create your views here.
