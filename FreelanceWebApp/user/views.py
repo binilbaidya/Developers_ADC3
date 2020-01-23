@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.hashers import make_password
 from .forms import UserForm, ProfileForm
 from django.contrib import messages
 from .models import AppUser
@@ -14,6 +15,7 @@ def register(request):
         profile_form = ProfileForm(request.POST,request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
+            #user_form.password = make_password(password)
             # # user = form.save()
             appuser = profile_form.save(commit=False)
             appuser.user = user
@@ -56,7 +58,9 @@ def user_login(request):
     if request.user.is_authenticated:
         return redirect('project:project')
     else:
+        # messages.warning(request, f'Invalid username or password.')
         return render(request, 'user/login.html', context={"form": form})
+        
 
 def view_profile(request):
     other = AppUser.objects.get(user=request.user)

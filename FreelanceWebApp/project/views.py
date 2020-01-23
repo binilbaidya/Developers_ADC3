@@ -102,8 +102,8 @@ def update_db(request, project_id):
     return redirect('project:project')
 
 
-def delete(request, project_id):
-    project_obj = Project.objects.get(pk = project_id)
+def delete(request,pk):
+    project_obj = Project.objects.get(pk = pk)
     uid = request.user.id
     pid = project_obj.user_id
     if uid == pid:
