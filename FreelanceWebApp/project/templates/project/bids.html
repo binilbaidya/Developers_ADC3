@@ -6,13 +6,13 @@
 <a href="/project" class="btn btn-light btn-sm mb-4">Go Back</a>
 
 {% for b in bids %}
+{% if b.project_id == project.project_id %}
+<legend style="font-size: large;"><a href="">{{b.user}}</a> applied for {{project.project_title}} project</legend>
 <hr>
-<h3><a href="">{{b.user}}</a> applied for {{b.project_title}} project</h3>
-<hr>
+{% endif %}
 {% empty %}
 <hr>
-<h3>You have no bids</h3>
+<legend>You have no bids</legend>
 <hr>
 {% endfor %}
-
 {% endblock %}

@@ -118,10 +118,12 @@ def bids(request, project_id):
     template = "project/bids.html"
     try:
         bids = Bid.objects.filter(bid_status__contains=1).order_by('-bid_time')
+        project_obj = Project.objects.get(pk = project_id)
     except Project.DoesNotExist:
         raise Http404("Project does not exist.")
     context = {
         'bids': bids,
+        'project':project_obj,
         'nbar': 'project',
     }
     
@@ -136,4 +138,5 @@ def add_bids(request, project_id):
     pid = project_obj.project_id
     b = Bid.objects.create(project_id=pid, user_id=uid)
     b.save()
+    messages.success(request, f'You have applied for this project. Please wait while the person reviews the biddings.')
     return redirect('project:project')

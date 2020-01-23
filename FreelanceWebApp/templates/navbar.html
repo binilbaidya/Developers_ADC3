@@ -12,10 +12,10 @@
                     <a class="nav-link {% if nbar == 'project' %}active{% endif %}" href="{% url 'project:project' %}">Project</a>
                 </li>
                 <li>
-                    <a class="nav-link {% if nbar == 'message' %}active{% endif %}" href="#">Message</a>
+                    <a class="nav-link {% if nbar == 'message' %}active{% endif %}" href="{% url 'message:message' %}">Message</a>
                 </li>
                 <li>
-                    <a class="nav-link {% if nbar == 'profile' %}active{% endif %}" href="#">Profile</a>
+                    <a class="nav-link {% if nbar == 'profile' %}active{% endif %}" href="{% url 'user:view_profile' %}">Profile</a>
                 </li>
                 <li>
                     <a class="nav-link {% if nbar == 'payment' %}active{% endif %}" href="#">Payment</a>

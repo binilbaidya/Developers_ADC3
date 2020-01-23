@@ -4,7 +4,7 @@
 
 <title>Project</title>
 
-<a href="create/" class="btn btn-primary btn-sm mb-3">Create Post</a>
+<a href="{% url 'project:create' %}" class="btn btn-primary btn-sm mb-3">Create Post</a>
 <div class="row">
     <div class="col-md-8">
         {% for p in items %}
