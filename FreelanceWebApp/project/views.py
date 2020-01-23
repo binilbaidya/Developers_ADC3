@@ -113,3 +113,27 @@ def delete(request,pk):
     else:
         messages.warning(request, f'Cannot delete this post')
         return redirect('project:project')
+
+def bids(request, project_id):
+    template = "project/bids.html"
+    try:
+        bids = Bid.objects.filter(bid_status__contains=1).order_by('-bid_time')
+    except Project.DoesNotExist:
+        raise Http404("Project does not exist.")
+    context = {
+        'bids': bids,
+        'nbar': 'project',
+    }
+    
+    if request.user.is_authenticated:
+        return render(request, template, context)
+    else:
+        return redirect('welcome')
+
+def add_bids(request, project_id):
+    project_obj = Project.objects.get(pk = project_id)
+    uid = request.user.id
+    pid = project_obj.project_id
+    b = Bid.objects.create(project_id=pid, user_id=uid)
+    b.save()
+    return redirect('project:project')
