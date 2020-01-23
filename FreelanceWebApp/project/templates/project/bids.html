@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<title>Bids Received</title>
+
+<a href="/project" class="btn btn-light btn-sm mb-4">Go Back</a>
+
+{% for b in bids %}
+<hr>
+<h3><a href="">{{b.user}}</a> applied for {{b.project_title}} project</h3>
+<hr>
+{% empty %}
+<hr>
+<h3>You have no bids</h3>
+<hr>
+{% endfor %}
+
+{% endblock %}
