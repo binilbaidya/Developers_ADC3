@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.hashers import make_password
 from .forms import UserForm, ProfileForm
@@ -60,7 +60,7 @@ def user_login(request):
     else:
         # messages.warning(request, f'Invalid username or password.')
         return render(request, 'user/login.html', context={"form": form})
-        
+
 
 def view_profile(request):
     other = AppUser.objects.get(user=request.user)
