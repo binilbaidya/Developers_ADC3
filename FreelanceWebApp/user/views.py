@@ -92,3 +92,10 @@ def delete_profile(request,pk):
     profile.delete()
     logout(request)
     return redirect('user:register')
+
+
+def add_funds(request):
+    if request.method == "POST":
+        funds = request.POST['fund']
+        AppUser.objects.filter(user=request.user).update(funds=funds)
+    return render(request, "user/add_funds.html")
