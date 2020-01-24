@@ -7,7 +7,7 @@ View Profile
 {% block content %}
 <h1 class="text-center">Profile</h1>
 <hr>
-<div class="row">
+<div class="row mb-5">
     <div class="col-md-4">
         <div class="card" style="width: 18rem;">
             <img src="https://www.windstream.com/getmedia/b2e4e38a-7cb6-4ca9-9544-54dfeaca6304/icon_user-circle.png.aspx?width=1920&height=1280&ext=.png"
@@ -32,16 +32,16 @@ View Profile
                 {% endif %}
             </ul>
             {% if other.user == user %}
-            {% else %}
             <div class="card-body">
                 <a href="{% url 'user:edit_profile' %}" class="card-link"><button class="btn btn-primary"> Edit
-                        Profile</button></a>
-                <form method="POST" enctype="multipart/form-data" class="card-link float-right"
+                    Profile</button></a>
+                    <form method="POST" enctype="multipart/form-data" class="card-link float-right"
                     action="{% url 'user:delete_profile' user.pk %}">
                     {% csrf_token %}
                     <button class="btn btn-danger" type="submit"> Delete Profile </button>
                 </form>
             </div>
+            {% else %}
             {% endif %}
         </div>
     </div>

@@ -68,7 +68,7 @@ def view_profile(request):
     context = {
         "user":request.user,
         "other":other
-          }
+    }
     return render(request,'user/view_profile.html',context)
 
 def edit_profile(request):
