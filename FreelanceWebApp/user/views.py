@@ -54,7 +54,10 @@ def user_login(request):
                 login(request, user)
                 messages.success(request, f'You are logged in as { username }!')
                 return redirect('project:project')
-
+        else:
+            messages.info(request, f'Invalid username or password')
+            return render(request, 'user/login.html', context={"form": form})
+           
     form = AuthenticationForm()
 
     if request.user.is_authenticated:
