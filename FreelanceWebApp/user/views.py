@@ -57,7 +57,7 @@ def user_login(request):
         else:
             messages.info(request, f'Invalid username or password')
             return render(request, 'user/login.html', context={"form": form})
-           
+
     form = AuthenticationForm()
 
     if request.user.is_authenticated:
@@ -73,7 +73,6 @@ def view_profile(request):
         "other":other
           }
     return render(request,'user/view_profile.html',context)
-
 def edit_profile(request):
     post_data = request.POST or None
     file_data = request.FILES or None

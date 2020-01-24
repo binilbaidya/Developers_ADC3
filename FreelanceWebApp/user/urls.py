@@ -9,6 +9,7 @@ urlpatterns = [
     path("view-profile/", views.view_profile, name="view_profile"),
     path("edit-profile/", views.edit_profile, name="edit_profile"),
     path("delete-profile/<int:pk>/", views.delete_profile, name="delete_profile"),
+    path("funds/", views.add_funds, name="add_funds"),
 ]
 
 

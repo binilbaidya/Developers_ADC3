@@ -28,9 +28,9 @@ View Profile
                 {% else %}
                 <li class="list-group-item">CV:<a href="{{other.cv.url}}" class="btn btn-primary btn-sm ml-3">Download
                         CV</a>
-                </li>
-                {% endif %}
-            </ul>
+                </li> {% endif %} </ul>
+
+                <a href="{% url 'user:add_funds' %}" class="card-link"><button class="btn btn-primary">Add Funds</button></a>
             {% if other.user == user %}
             <div class="card-body">
                 <a href="{% url 'user:edit_profile' %}" class="card-link"><button class="btn btn-primary"> Edit
