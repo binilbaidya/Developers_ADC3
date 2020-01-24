@@ -6,6 +6,7 @@ from message.models import Message
 
 class MessageTest(TestCase):
 
+    # test cases for message
     def setUp(self):
         Message.objects.create(message_title="payment",message_time=datetime.now(),message_body="payment for web design")
         Message.objects.create(message_title="error",message_time=datetime.now(),message_body="fix error")

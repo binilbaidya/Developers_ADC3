@@ -6,6 +6,7 @@ from django.utils import timezone
 # Create your tests here.
 
 class PaymentTest(TestCase):
+    # test case for payment
 
     def setUp(self):
         User.objects.create_user(username='john', email='jlennon@beatles.com', password='glass onion')

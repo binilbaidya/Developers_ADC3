@@ -1,3 +1,4 @@
+# importing required packages
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
@@ -8,10 +9,11 @@ from .models import AppUser
 from project.views import Project
 
 # Create your views here.
-
+# takes required data from user and register it to database
 def register(request):
     if request.method == "POST":
         user_form = UserForm(request.POST)
+        # check if the form is valid
         profile_form = ProfileForm(request.POST,request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
@@ -37,10 +39,12 @@ def register(request):
     else:
         return render(request, "user/register.html", context)
 
+# it logouts the user and redirect to welcome page
 def user_logout(request):
     logout(request)
     return redirect('message:welcome')
 
+# it logs user in if valid
 def user_login(request):
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
