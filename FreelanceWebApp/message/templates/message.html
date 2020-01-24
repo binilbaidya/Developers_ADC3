@@ -4,12 +4,46 @@
 
 <title>Message</title>
 
-<div class="card" style="width: 18rem;">
-    <div class="card-body">
-        <h5 class="card-title">Message</h5>
-        <p class="card-text">This is message page.</p>
-        <h6 class="card-subtitle mb-2 text-muted float-right" style="font-size: xx-small;">9:08</h6>
+<div class="chat-page">
+    <div class="msg-inbox">
+        <div class="chats">
+            <div class="msg-page">
+                {% for msg in message %}
+                    {% if msg.sender_id == request.user.id %}
+                    <div class="outgoing-chats">
+                        <div class="outgoing-chats-label">
+                            <a href="">{{msg.sender}}:</a>
+                        </div>
+                        <div class="outgoing-chats-msg">
+                            <p>{{msg.message}}</p>
+                            <span class="time">{{msg.created}}</span>
+                        </div>
+                    </div>                    
+                    {% else %} 
+                    <div class="received-chats">
+                        <div class="received-chats-label">
+                            <a href="">{{msg.sender}}:</a>
+                        </div>
+                        <div class="received-msg">
+                            <div class="received-msg-inbox">
+                                <p>{{msg.message}}</p>
+                                <span class="time">{{msg.created}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+
+    <form method="POST" action="{% url 'message:create_message' %}" class="message-input">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="text" class="form-control float-left" name="message" style="max-width: 1000px;">
+            <button type="submit" class="btn btn-primary float-right" style="margin-right: 75px;">Submit</button>
+        </div>
+    </form>
 
 {% endblock %}
