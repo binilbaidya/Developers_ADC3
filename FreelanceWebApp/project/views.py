@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.db.models import Q
 from django.contrib import messages
 from project.forms import Form
+from user.models import AppUser
 from .models import Project, Bid
 from project.paginations import pagination
 
@@ -123,11 +124,13 @@ def bids(request, project_id):
     try:
         bids = Bid.objects.filter(bid_status__contains=1).order_by('-bid_time')
         project_obj = Project.objects.get(pk = project_id)
+        other = AppUser.objects.get(user=request.user)
     except Project.DoesNotExist:
         raise Http404("Project does not exist.")
     context = {
         'bids': bids,
         'project':project_obj,
+        'other': other,
         'nbar': 'project',
     }
     

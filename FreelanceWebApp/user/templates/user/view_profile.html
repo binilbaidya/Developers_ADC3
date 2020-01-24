@@ -23,10 +23,16 @@ View Profile
                 <li class="list-group-item">Lastname: {{ user.last_name }}</li>
                 <li class="list-group-item">Email: {{ user.email }}</li>
                 <li class="list-group-item">Phone: {{ other.phone }}</li>
+                {% if other.cv == "No" %}
+                <li class="list-group-item">CV: <a href="#"><legend style="font-size: medium;">No CV Found</legend></a></li>
+                {% else %}
                 <li class="list-group-item">CV:<a href="{{other.cv.url}}" class="btn btn-primary btn-sm ml-3">Download
                         CV</a>
                 </li>
+                {% endif %}
             </ul>
+            {% if other.user == user %}
+            {% else %}
             <div class="card-body">
                 <a href="{% url 'user:edit_profile' %}" class="card-link"><button class="btn btn-primary"> Edit
                         Profile</button></a>
@@ -36,6 +42,7 @@ View Profile
                     <button class="btn btn-danger" type="submit"> Delete Profile </button>
                 </form>
             </div>
+            {% endif %}
         </div>
     </div>
     <div class="col-md-8">

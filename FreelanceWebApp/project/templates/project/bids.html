@@ -7,7 +7,7 @@
 
 {% for b in bids %}
 {% if b.project_id == project.project_id %}
-<legend style="font-size: large;"><a href="">{{b.user}}</a> applied for {{project.project_title}} project</legend>
+<legend style="font-size: large;"><a href="{% url 'user:view_profile' %}">{{b.user}}</a> applied for {{project.project_title}} project</legend>
 <hr>
 {% endif %}
 {% empty %}

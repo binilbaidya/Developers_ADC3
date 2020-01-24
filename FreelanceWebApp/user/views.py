@@ -17,8 +17,6 @@ def register(request):
         profile_form = ProfileForm(request.POST,request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
-            #user_form.password = make_password(password)
-            # # user = form.save()
             appuser = profile_form.save(commit=False)
             appuser.user = user
             appuser.save()
@@ -62,7 +60,6 @@ def user_login(request):
     if request.user.is_authenticated:
         return redirect('project:project')
     else:
-        # messages.warning(request, f'Invalid username or password.')
         return render(request, 'user/login.html', context={"form": form})
 
 
