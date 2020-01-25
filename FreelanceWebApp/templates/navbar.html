@@ -18,7 +18,7 @@
                     <a class="nav-link {% if nbar == 'profile' %}active{% endif %}" href="{% url 'user:view_profile' %}">Profile</a>
                 </li>
                 <li>
-                    <a class="nav-link {% if nbar == 'payment' %}active{% endif %}" href="#">Payment</a>
+                    <a class="nav-link {% if nbar == 'payment' %}active{% endif %}" href="{% url 'payment:payment' %}">Payment</a>
                 </li>
                 <li>
                     <a class="nav-link" href="{% url 'user:logout' %}">Logout</a>
