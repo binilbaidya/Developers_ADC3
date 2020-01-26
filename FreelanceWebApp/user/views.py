@@ -78,9 +78,6 @@ def edit_profile(request):
     app_user = AppUser.objects.get(user=request.user)
     user_form = EditForm(post_data, instance=request.user)
     profile_form = ProfileForm(post_data,file_data, instance=app_user)
-    print(user_form)
-    print(user_form.is_valid())
-    print(profile_form.is_valid())
     if user_form.is_valid() and profile_form.is_valid():
         user_form.save()
         profile_form.save()
