@@ -6,6 +6,7 @@ View Profile
 
 {% block content %}
 <h1 class="text-center">Profile</h1>
+
 <hr>
 <div class="row mb-5">
     <div class="col-md-4">
@@ -30,24 +31,26 @@ View Profile
                         CV</a>
                 </li> {% endif %} </ul>
 
-                <a href="{% url 'user:add_funds' %}" class="card-link"><button class="btn btn-primary">Add Funds</button></a>
-            {% if other.user == user %}
-            <div class="card-body">
-                <a href="{% url 'user:edit_profile' %}" class="card-link"><button class="btn btn-primary"> Edit
-                    Profile</button></a>
-                    <form method="POST" enctype="multipart/form-data" class="card-link float-right"
-                    action="{% url 'user:delete_profile' user.pk %}">
-                    {% csrf_token %}
-                    <button class="btn btn-danger" type="submit"> Delete Profile </button>
-                </form>
-            </div>
-            {% else %}
-            {% endif %}
+                {% if other.user == user %}
+                    <div class="container">
+
+                        <a href="{% url 'user:edit_profile' %}"><button class="btn btn-primary float-left mr-3"> Edit Profile</button></a>
+                        <form method="POST" enctype="multipart/form-data" action="{% url 'user:delete_profile' user.pk %}">
+                            {% csrf_token %}
+                            <button class="btn btn-danger float-left" type="submit"> Delete Profile </button>
+                        </form>
+                    </div>
+                {% else %}
+                {% endif %}
         </div>
     </div>
     <div class="col-md-8">
-        You have an awesome creator inside you, who will change the way people use mobiles and computers.
-        Be a part of an evolution.
+        <h3>You have an awesome creator inside you, who will change the way people use mobiles and computers.
+            Be a part of an evolution.</h3>
+        <hr>
+        <h5> Your Current balance is : {{other.funds}}</h5>
+
+        <a href="{% url 'user:add_funds' %}"><button class="btn btn-primary float-right mr-3">Add Funds</button></a>
     </div>
 </div>
 {% endblock %}

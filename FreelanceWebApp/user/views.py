@@ -2,8 +2,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.hashers import make_password
-from .forms import UserForm, ProfileForm
+from .forms import UserForm, ProfileForm, EditForm
 from django.contrib import messages
 from .models import AppUser
 from project.views import Project
@@ -55,7 +54,7 @@ def user_login(request):
                 messages.success(request, f'You are logged in as { username }!')
                 return redirect('project:project')
         else:
-            messages.info(request, f'Invalid username or password')
+            # messages.info(request, f'Invalid username or password')
             return render(request, 'user/login.html', context={"form": form})
 
     form = AuthenticationForm()
@@ -77,9 +76,12 @@ def edit_profile(request):
     post_data = request.POST or None
     file_data = request.FILES or None
     app_user = AppUser.objects.get(user=request.user)
-    user_form = UserForm(post_data, instance=request.user)
+    user_form = EditForm(post_data, instance=request.user)
     profile_form = ProfileForm(post_data,file_data, instance=app_user)
-    if user_form.is_valid and profile_form.is_valid():
+    print(user_form)
+    print(user_form.is_valid())
+    print(profile_form.is_valid())
+    if user_form.is_valid() and profile_form.is_valid():
         user_form.save()
         profile_form.save()
         return redirect("user:view_profile")
@@ -101,4 +103,5 @@ def add_funds(request):
     if request.method == "POST":
         funds = request.POST['fund']
         AppUser.objects.filter(user=request.user).update(funds=funds)
+        return redirect('user:view_profile')
     return render(request, "user/add_funds.html")
