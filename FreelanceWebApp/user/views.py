@@ -97,8 +97,10 @@ def delete_profile(request,pk):
 
 
 def add_funds(request):
+    previous_funds = AppUser.objects.get(user=request.user).funds
     if request.method == "POST":
-        funds = request.POST['fund']
+        funds = int(request.POST['fund'])
+        funds = funds + previous_funds
         AppUser.objects.filter(user=request.user).update(funds=funds)
         return redirect('user:view_profile')
     return render(request, "user/add_funds.html")

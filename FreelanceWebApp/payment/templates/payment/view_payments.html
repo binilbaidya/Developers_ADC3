@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3>Payments</h3>
+    </div>
+    {% for p in payment %}
+    {% if p.payment_status %}
+
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                {{forloop.counter}}. {{p.user}} has paid  Rs. {{p.payment_amount}} for project {{p.project}} to {{p.project.user}}
+            </li>
+        </ul>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}
