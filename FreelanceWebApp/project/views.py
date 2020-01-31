@@ -124,20 +124,18 @@ def bids(request, project_id):
     try:
         bids = Bid.objects.filter(bid_status__contains=1).order_by('-bid_time')
         project_obj = Project.objects.get(pk = project_id)
-        other = AppUser.objects.get(user=request.user)
     except Project.DoesNotExist:
         raise Http404("Project does not exist.")
     context = {
         'bids': bids,
         'project':project_obj,
-        'other': other,
         'nbar': 'project',
     }
     
     if request.user.is_authenticated:
         return render(request, template, context)
     else:
-        return redirect('welcome')
+        return redirect('message:welcome')
 
 def add_bids(request, project_id):
     project_obj = Project.objects.get(pk = project_id)
