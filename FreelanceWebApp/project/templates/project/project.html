@@ -10,7 +10,7 @@
         {% for p in items %}
         <div class="card">
             <div class="card-body">
-                <a href="{{ p.project_id }}">
+                <a href="{% url 'project:details' p.project_id %}">
                     <h5 class="card-title">{{p.project_title}}</h5>
                 </a>
                 <h6 class="card-subtitle mb-2 text-muted">{{p.project_time}}</h6>
