@@ -46,7 +46,7 @@ def search(request):
     template = "project/project.html"
     query = request.GET.get('q')
     if query:
-        results = Project.objects.filter(Q(project_title__icontains=query) | Q(project_description__icontains=query))
+        results = Project.objects.filter(Q(project_title__icontains=query) | Q(project_description__icontains=query) | Q(project_type__icontains=query))
     else:# if not authenticated he/she is redirected to welcome page
         results = Project.objects.filter(project_status__contains=1)
     pages = pagination(request, results, 1)

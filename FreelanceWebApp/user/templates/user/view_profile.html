@@ -14,43 +14,47 @@ View Profile
             <img src="https://www.windstream.com/getmedia/b2e4e38a-7cb6-4ca9-9544-54dfeaca6304/icon_user-circle.png.aspx?width=1920&height=1280&ext=.png"
                 class="card-img-top" alt="img">
             <div class="card-body">
-                <h5 class="card-title">{{ user }}</h5>
+                <h5 class="card-title">{{ detail }}</h5>
                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
                     card's
                     content.</p>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">Firstname: {{ user.first_name }}</li>
-                <li class="list-group-item">Lastname: {{ user.last_name }}</li>
-                <li class="list-group-item">Email: {{ user.email }}</li>
+                <li class="list-group-item">Firstname: {{ detail.first_name }}</li>
+                <li class="list-group-item">Lastname: {{ detail.last_name }}</li>
+                <li class="list-group-item">Email: {{ detail.email }}</li>
                 <li class="list-group-item">Phone: {{ other.phone }}</li>
                 {% if other.cv == "No" %}
                 <li class="list-group-item">CV: <a href="#"><legend style="font-size: medium;">No CV Found</legend></a></li>
                 {% else %}
-                <li class="list-group-item">CV:<a href="{{other.cv.url}}" class="btn btn-primary btn-sm ml-3">Download
-                        CV</a>
-                </li> {% endif %} </ul>
+                <li class="list-group-item">CV:<a href="{{other.cv.url}}" class="btn btn-primary btn-sm ml-3">Download CV</a></li> 
+                {% endif %} 
+            </ul>
 
-                {% if other.user == user %}
-                    <div class="container">
-
-                        <a href="{% url 'user:edit_profile' %}"><button class="btn btn-primary float-left mr-3"> Edit Profile</button></a>
-                        <form method="POST" enctype="multipart/form-data" action="{% url 'user:delete_profile' user.pk %}">
-                            {% csrf_token %}
-                            <button class="btn btn-danger float-left" type="submit"> Delete Profile </button>
-                        </form>
-                    </div>
-                {% else %}
-                {% endif %}
+            {% if request.user.id == detail.id %}
+                <div class="container">
+                    <a href="{% url 'user:edit_profile' user.pk %}"><button class="btn btn-primary float-left mr-3"> Edit Profile</button></a>
+                    <form method="POST" enctype="multipart/form-data" action="{% url 'user:delete_profile' user.pk %}">
+                        {% csrf_token %}
+                        <button class="btn btn-danger float-left" type="submit"> Delete Profile </button>
+                    </form>
+                </div>
+            {% endif %}
         </div>
     </div>
     <div class="col-md-8">
-        <h3>You have an awesome creator inside you, who will change the way people use mobiles and computers.
-            Be a part of an evolution.</h3>
-        <hr>
-        <h5> Your Current balance is : {{other.funds}}</h5>
+        <h4>You have an awesome creator inside you, who will change the way people use mobiles and computers.
+            Be a part of an evolution.</h4>
 
-        <a href="{% url 'user:add_funds' %}"><button class="btn btn-primary float-right mr-3">Add Funds</button></a>
+        <hr>
+        
+        {% if request.user.id == detail.id %}
+            <h5> Your Current balance is : {{other.funds}}</h5>
+            <a href="{% url 'user:add_funds' %}"><button class="btn btn-primary float-right mr-3">Add Funds</button></a>
+        {% else %}
+            <a href="{% url 'payment:payment' %}"><button class="btn btn-primary float-left mr-3">Pay</button></a>
+            <a href="{% url 'message:message' detail.id %}"><button class="btn btn-primary float-right mr-3">Message</button></a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

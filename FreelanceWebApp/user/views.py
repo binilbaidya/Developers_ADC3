@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from .forms import UserForm, ProfileForm, EditForm
 from django.contrib import messages
+from django.contrib.auth.models import User
 from .models import AppUser
 from project.views import Project
 
@@ -54,7 +55,6 @@ def user_login(request):
                 messages.success(request, f'You are logged in as { username }!')
                 return redirect('project:project')
         else:
-            # messages.info(request, f'Invalid username or password')
             return render(request, 'user/login.html', context={"form": form})
 
     form = AuthenticationForm()
@@ -65,14 +65,17 @@ def user_login(request):
         return render(request, 'user/login.html', context={"form": form})
 
 
-def view_profile(request):
-    other = AppUser.objects.get(user=request.user)
+def view_profile(request, pk):
+    detail = User.objects.get(pk=pk)
+    other = AppUser.objects.get(pk=pk)
     context = {
-        "user":request.user,
-        "other":other
-          }
+        "detail":detail,
+        "other":other,
+        "nbar":"profile"
+    }
     return render(request,'user/view_profile.html',context)
-def edit_profile(request):
+
+def edit_profile(request, pk):
     post_data = request.POST or None
     file_data = request.FILES or None
     app_user = AppUser.objects.get(user=request.user)
@@ -81,7 +84,7 @@ def edit_profile(request):
     if user_form.is_valid() and profile_form.is_valid():
         user_form.save()
         profile_form.save()
-        return redirect("user:view_profile")
+        return redirect("user:view_profile", pk=request.user.id)
 
     context={
         "user_form": user_form,
@@ -102,5 +105,5 @@ def add_funds(request):
         funds = int(request.POST['fund'])
         funds = funds + previous_funds
         AppUser.objects.filter(user=request.user).update(funds=funds)
-        return redirect('user:view_profile')
+        return redirect('user:view_profile', pk=request.user.id)
     return render(request, "user/add_funds.html")

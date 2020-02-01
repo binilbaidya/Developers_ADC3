@@ -25,7 +25,7 @@ def payment(request):
                 pay.save()
                 funds = funds - payment_amount
                 AppUser.objects.filter(user=request.user).update(funds=funds)
-                return redirect('user:view_payment')
+                return redirect('payment:view_payments')
     payment_form = PaymentForm()
     return render(request,"payment/payment.html", {'payment_form':payment_form})
 

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<title>Message</title>
+
+    <div class="card-body">
+        <h4 class="card-title">Start Messaging</h4>
+        {% for u in Users %}
+        {% if u == request.user %}
+        {% else %}
+            <ul class="list-group">
+                <li class="list-group-item"><a href="{% url 'message:message' u.id %}">{{u}}</a></li>
+            </ul>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+{% endblock %}
