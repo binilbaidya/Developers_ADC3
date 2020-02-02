@@ -9,7 +9,7 @@
         <div class="chats">
             <div class="msg-page">
                 {% for msg in message %}
-                    {% if request.user.id == msg.sender.id or request.user.id == msg.receiver.id and detail.id == msg.receiver.id or detail.id == msg.sender.id %}
+                    {% if request.user.id == msg.sender.id and detail.id == msg.receiver.id or request.user.id == msg.receiver.id and detail.id == msg.sender.id %}
                         {% if msg.sender.id == request.user.id %}
                             <div class="outgoing-chats">
                                 <div class="outgoing-chats-label">
