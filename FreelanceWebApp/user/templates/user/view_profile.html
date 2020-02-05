@@ -27,8 +27,8 @@ View Profile
                 {% if other.cv == "No" %}
                 <li class="list-group-item">CV: <a href="#"><legend style="font-size: medium;">No CV Found</legend></a></li>
                 {% else %}
-                <li class="list-group-item">CV:<a href="{{other.cv.url}}" class="btn btn-primary btn-sm ml-3">Download CV</a></li> 
-                {% endif %} 
+                <li class="list-group-item">CV:<a href="{{other.cv.url}}" class="btn btn-primary btn-sm ml-3">Download CV</a></li>
+                {% endif %}
             </ul>
 
             {% if request.user.id == detail.id %}
@@ -47,12 +47,12 @@ View Profile
             Be a part of an evolution.</h4>
 
         <hr>
-        
+
         {% if request.user.id == detail.id %}
             <h5> Your Current balance is : {{other.funds}}</h5>
             <a href="{% url 'user:add_funds' %}"><button class="btn btn-primary float-right mr-3">Add Funds</button></a>
         {% else %}
-            <a href="{% url 'payment:payment' %}"><button class="btn btn-primary float-left mr-3">Pay</button></a>
+            <a href="{% url 'payment:payment' detail.id %}"><button class="btn btn-primary float-left mr-3">Pay</button></a>
             <a href="{% url 'message:message' detail.id %}"><button class="btn btn-primary float-right mr-3">Message</button></a>
         {% endif %}
     </div>
