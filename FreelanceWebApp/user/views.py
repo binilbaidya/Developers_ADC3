@@ -4,12 +4,14 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from .forms import UserForm, ProfileForm, EditForm
 from django.contrib import messages
+from project.decorators import unauthenticated_user, authenticated_user
 from django.contrib.auth.models import User
 from .models import AppUser
 from project.views import Project
 
 # Create your views here.
 # takes required data from user and register it to database
+@unauthenticated_user
 def register(request):
     if request.method == "POST":
         user_form = UserForm(request.POST)
@@ -32,10 +34,7 @@ def register(request):
         "user_form": user_form,
         "profile_form": profile_form
     }
-    if request.user.is_authenticated:
-        return redirect('project:project')
-    else:
-        return render(request, "user/register.html", context)
+    return render(request, "user/register.html", context)
 
 # it logouts the user and redirect to welcome page
 def user_logout(request):
@@ -43,6 +42,7 @@ def user_logout(request):
     return redirect('message:welcome')
 
 # it logs user in if valid
+@unauthenticated_user
 def user_login(request):
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
@@ -58,16 +58,12 @@ def user_login(request):
             return render(request, 'user/login.html', context={"form": form})
 
     form = AuthenticationForm()
+    return render(request, 'user/login.html', context={"form": form})
 
-    if request.user.is_authenticated:
-        return redirect('project:project')
-    else:
-        return render(request, 'user/login.html', context={"form": form})
-
-
+@authenticated_user
 def view_profile(request, pk):
     detail = User.objects.get(pk=pk)
-    other = AppUser.objects.get(pk=pk)
+    other = AppUser.objects.get(user_id=pk)
     context = {
         "detail":detail,
         "other":other,
@@ -75,6 +71,7 @@ def view_profile(request, pk):
     }
     return render(request,'user/view_profile.html',context)
 
+@authenticated_user
 def edit_profile(request, pk):
     post_data = request.POST or None
     file_data = request.FILES or None
@@ -92,12 +89,20 @@ def edit_profile(request, pk):
     }
     return render(request, 'user/edit_profile.html',context)
 
+@authenticated_user
 def delete_profile(request,pk):
-    profile = AppUser.objects.get(pk=pk)
-    profile.delete()
-    logout(request)
-    return redirect('user:register')
-
+    main = User.objects.get(pk = pk)
+    profile = AppUser.objects.get(user_id=pk)
+    uid = request.user.id
+    pid = profile.user_id
+    if uid == pid:
+        profile.delete()
+        main.delete()
+        logout(request)
+        return redirect('user:register')
+    else:
+        messages.warning(request, f'You cannot perform the following action!')
+        return redirect('user:view_profile', pk = uid)
 
 def add_funds(request):
     previous_funds = AppUser.objects.get(user=request.user).funds

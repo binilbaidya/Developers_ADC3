@@ -3,12 +3,12 @@ from payment.forms import PaymentForm
 from django.contrib import messages
 from user.models import AppUser
 from payment.models import Payment
-from django.contrib.auth.decorators import login_required
+from project.decorators import authenticated_user
 from django.contrib.auth.models import User
 
 # Create your views here.
 
-@login_required
+@authenticated_user
 def payment(request,id):
     if request.method == "POST":
         payment_form = PaymentForm(request.POST)
@@ -33,7 +33,7 @@ def payment(request,id):
     payment_form = PaymentForm()
     return render(request,"payment/payment.html", {'payment_form':payment_form})
 
-@login_required
+@authenticated_user
 def view_payments(request):
     payment = Payment.objects.filter(payment_status__exact=1)
     return render(request,'payment/view_payments.html',{'payment':payment})
