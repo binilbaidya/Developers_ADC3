@@ -5,10 +5,12 @@ from django.contrib import messages
 from project.forms import Form
 from user.models import AppUser
 from .models import Project, Bid
+from .decorators import authenticated_user
 from project.paginations import pagination
 
 # Create your views here.
 
+@authenticated_user   
 def project(request):
 
     template = "project/project.html"
@@ -21,12 +23,10 @@ def project(request):
         'page_range': pages[1],
         'nbar': 'project',
     }
-    if request.user.is_authenticated:
-        return render(request, template, context)
-    else:
-        return redirect('message:welcome')
+    return render(request, template, context)
 
 # viewing the project
+@authenticated_user
 def details(request, project_id):#project id is passed
     template = "project/details.html"
     try:
@@ -37,11 +37,9 @@ def details(request, project_id):#project id is passed
         'details': details,
         'nbar': 'project',
     }
-    if request.user.is_authenticated:# if the user is authenticated user is redirected to project details
-        return render(request, template, context)
-    else:
-        return redirect('welcome')
+    return render(request, template, context)
 
+@authenticated_user
 def search(request):
     template = "project/project.html"
     query = request.GET.get('q')
@@ -56,11 +54,9 @@ def search(request):
         'query': query,
         'nbar': 'project',
     }
-    if request.user.is_authenticated:
-        return render(request, template, context)
-    else:
-        return redirect('message:welcome')
+    return render(request, template, context)
 
+@authenticated_user
 def create(request):
     if request.method == "POST":
         create_form = Form(request.POST)
@@ -75,14 +71,11 @@ def create(request):
     context={
         "create_form": create_form
     }
-    if request.user.is_authenticated:
-        return render(request, 'project/create.html', context)
-    else:
-        return redirect('user:login')
+    return render(request, 'project/create.html', context)
 
 # editing the existing project
+@authenticated_user
 def update(request, project_id):
-    project=Project()
     project_obj = Project.objects.get(pk=project_id)
     context = {
         'project': project_obj,
@@ -93,6 +86,7 @@ def update(request, project_id):
         return render(request, 'project/update.html', context)
     else:# else it stays on the current page
         return redirect('project:project')
+
 # update database
 def update_db(request, project_id):
     project_obj = Project.objects.get(pk=project_id)
@@ -107,6 +101,7 @@ def update_db(request, project_id):
     return redirect('project:project')
 
 # Deleting a project
+@authenticated_user
 def delete(request,pk):# Gets id of the project to be deleted
     project_obj = Project.objects.get(pk = pk)
     uid = request.user.id
@@ -119,6 +114,7 @@ def delete(request,pk):# Gets id of the project to be deleted
         messages.warning(request, f'Cannot delete this post')
         return redirect('project:project')
 
+@authenticated_user
 def bids(request, project_id):
     template = "project/bids.html"
     try:
@@ -131,11 +127,7 @@ def bids(request, project_id):
         'project':project_obj,
         'nbar': 'project',
     }
-    
-    if request.user.is_authenticated:
-        return render(request, template, context)
-    else:
-        return redirect('message:welcome')
+    return render(request, template, context)
 
 def add_bids(request, project_id):
     project_obj = Project.objects.get(pk = project_id)
