@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'project.apps.ProjectConfig',
     'message.apps.MessageConfig',
     'payment.apps.WebConfig',
+    'restapi.apps.RestapiConfig',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
