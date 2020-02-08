@@ -9,7 +9,7 @@
 	{{details.project_description}}
 </div>
 <hr>
-<small>Written on {{details.project_time}} by {{details.user}}</small>
+<small>Written on {{details.project_time}} by <a href="{% url 'user:view_profile' details.user_id %}"> {{details.user}} </a></small>
 <hr>
 
 {% if details.user == user %}

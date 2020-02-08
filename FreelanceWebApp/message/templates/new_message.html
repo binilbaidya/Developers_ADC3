@@ -6,9 +6,9 @@
 
     <div class="card-body">
         <h4 class="card-title">Start Messaging</h4>
-        {% for u in Users %}
-        {% if u == request.user %}
-        {% else %}
+        {% for u in Users %} <!-- It loops through the Users stored in database and displays them on the page -->
+        {% if u == request.user %} <!-- It checks the current user and displays all other users besides the current user -->
+        {% else %} 
             <ul class="list-group">
                 <li class="list-group-item"><a href="{% url 'message:message' u.id %}">{{u}}</a></li>
             </ul>
