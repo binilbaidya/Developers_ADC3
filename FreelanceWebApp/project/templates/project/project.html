@@ -4,9 +4,9 @@
 
 <title>Project</title>
 
-<a href="{% url 'project:create' %}" class="btn btn-primary btn-sm mb-3">Create Post</a>
 <div class="row">
     <div class="col-md-8">
+        <a href="{% url 'project:create' %}" class="btn btn-primary btn-sm mb-3">Create Post</a>
         {% for p in items %}
         <div class="card">
             <div class="card-body">
@@ -19,15 +19,13 @@
         </div>
         <br>
         {% empty %}
-        <div class="container">
-            <div class="card">
-                <div class="card-header">
-                    Projects
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">No posts available!</h5>
-                    <p class="card-text">No projects are available for now to work on, meanwhile you can create one!</p>
-                </div>
+        <div class="card">
+            <div class="card-header">
+                Projects
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">No posts available!</h5>
+                <p class="card-text">No projects are available for now to work on, meanwhile you can create one!</p>
             </div>
         </div>
         <br>

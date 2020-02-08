@@ -6,12 +6,15 @@
     </div>
     {% for p in payment %}
     {% if p.payment_status %}
-
     <div class="card-body">
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-                {{forloop.counter}}. {{p.user}} has paid  Rs. {{p.payment_amount}} to {{p.pay_to}}
-            </li>
+            {% if request.user.id == p.user.id or request.user.id == p.pay_to.id%}
+                <li class="list-group-item">
+                    {{forloop.counter}}. {{p.user}} has paid  Rs. {{p.payment_amount}} to {{p.pay_to}}
+                </li>
+            {% else %}
+                <h5>No Payments</h5>
+            {% endif %}
         </ul>
     </div>
     {% endif %}

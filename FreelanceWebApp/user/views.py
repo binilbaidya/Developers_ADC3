@@ -7,7 +7,8 @@ from django.contrib import messages
 from project.decorators import unauthenticated_user, authenticated_user
 from django.contrib.auth.models import User
 from .models import AppUser
-from project.views import Project
+from project.models import Project
+from project.paginations import pagination
 
 # Create your views here.
 # takes required data from user and register it to database
@@ -64,9 +65,13 @@ def user_login(request):
 def view_profile(request, pk):
     detail = User.objects.get(pk=pk)
     other = AppUser.objects.get(user_id=pk)
+    object_list = Project.objects.filter(user_id=pk).order_by('-project_time')#latest projects are shown according to the latest time
+    pages = pagination(request, object_list, 2)
     context = {
         "detail":detail,
         "other":other,
+        'items': pages[0],
+        'page_range': pages[1],
         "nbar":"profile"
     }
     return render(request,'user/view_profile.html',context)
