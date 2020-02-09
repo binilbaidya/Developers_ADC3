@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.db.models import Q
 from django.contrib import messages
-from project.forms import Form
+from project.forms import Form, updateForm
 from user.models import AppUser
 from .models import Project, Bid
 from .decorators import authenticated_user
@@ -77,28 +77,21 @@ def create(request):
 @authenticated_user
 def update(request, project_id):
     project_obj = Project.objects.get(pk=project_id)
-    context = {
-        'project': project_obj,
-    }
     uid = request.user.id
     pid = project_obj.user_id#if user id matches with project id then update page is shown
     if uid == pid:
+        post_data = request.POST or None
+        uForm = updateForm(post_data, instance = project_obj) 
+        if uForm.is_valid():
+            uForm.save()
+            messages.success(request, f'Post updated.')# message displayed by redirecting on the project page
+            return redirect('project:details', project_id=project_id)
+        context={
+            "uForm": uForm,
+        }
         return render(request, 'project/update.html', context)
     else:# else it stays on the current page
         return redirect('project:project')
-
-# update database
-def update_db(request, project_id):
-    project_obj = Project.objects.get(pk=project_id)
-    project_data = request.POST
-
-    # Gives user the chance to update
-    project_obj.project_title = request.POST['title']
-    project_obj.project_description = request.POST['description']
-    project_obj.project_type = request.POST['pr_type']
-    project_obj.save() # changes are saved
-    messages.success(request, f'Post updated.')# message displayed by redirecting on the project page
-    return redirect('project:project')
 
 # Deleting a project
 @authenticated_user
