@@ -64,7 +64,10 @@ def user_login(request):
 @authenticated_user
 def view_profile(request, pk):
     detail = User.objects.get(pk=pk)
-    other = AppUser.objects.get(user_id=pk)
+    if detail.is_superuser:
+        other = None
+    else:
+        other = AppUser.objects.get(user_id=pk)
     object_list = Project.objects.filter(user_id=pk).order_by('-project_time')#latest projects are shown according to the latest time
     pages = pagination(request, object_list, 2)
     context = {
@@ -97,14 +100,17 @@ def edit_profile(request, pk):
 @authenticated_user
 def delete_profile(request,pk):
     main = User.objects.get(pk = pk)
-    profile = AppUser.objects.get(user_id=pk)
     uid = request.user.id
-    pid = profile.user_id
+    pid = main.id
     if uid == pid:
-        profile.delete()
         main.delete()
         logout(request)
+        messages.success(request, f'User has been deleted')
         return redirect('user:register')
+    elif request.user.is_superuser:
+        main.delete()
+        messages.success(request, f'User has been deleted')
+        return redirect('message:welcome')
     else:
         messages.warning(request, f'You cannot perform the following action!')
         return redirect('user:view_profile', pk = uid)

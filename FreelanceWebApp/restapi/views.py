@@ -32,7 +32,7 @@ def add_project(request):
         json_data = request.body.decode('utf-8')
         new = json.loads(json_data)
         project_title = new['project_title']
-        project_description = new['project_title']
+        project_description = new['project_description']
         project_type = new['project_type']
         project = Project.objects.create(project_title=project_title, project_description = project_description, project_type = project_type)
         try:
@@ -45,9 +45,7 @@ def add_project(request):
 @csrf_exempt
 def update_api_data(request, pk):
     project = Project.objects.get(pk=pk)
-    if request.method == "GET":
-        return JsonResponse({"ID":project.id,"project_title":project.project_title,"project_description":project.project_description,"project_type":project.project_type,"project_status":project.project_status})
-    elif request.method == "PUT":
+    if request.method == "PUT":
         json_data = request.body.decode('utf-8')
         update_data = json.loads(json_data)
         project.project_title = update_data['project_title']

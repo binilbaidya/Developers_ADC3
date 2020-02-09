@@ -24,7 +24,7 @@ View Profile
                 {% if other.cv == "No" %}
                 <li class="list-group-item">CV: <a href="#"><legend style="font-size: medium;">No CV Found</legend></a></li>
                 {% else %}
-                <li class="list-group-item">CV:<a href="{{other.cv.url}}" class="btn btn-primary btn-sm ml-3">Download CV</a></li>
+                <li class="list-group-item">CV:<a href="{{other.cv.url}}" download class="btn btn-primary btn-sm ml-3">Download CV</a></li>
                 {% endif %}
                 {% if request.user.id == detail.id %}
                     <li class="list-group-item"> Balance : {{other.funds}}</li>
@@ -36,10 +36,12 @@ View Profile
                 {% endif %}
             </ul>
 
-            {% if request.user.id == detail.id %}
+            {% if request.user.id == detail.id or request.user.is_superuser %}
                 <div class="container">
+                {% if request.user.id == detail.id %}
                     <a href="{% url 'user:edit_profile' user.pk %}"><button class="btn btn-primary btn-sm float-left mr-2"> Edit Profile</button></a>
-                    <form method="POST" enctype="multipart/form-data" action="{% url 'user:delete_profile' user.pk %}">
+                {% endif %}
+                    <form method="POST" enctype="multipart/form-data" action="{% url 'user:delete_profile' detail.pk %}">
                         {% csrf_token %}
                         <button class="btn btn-danger btn-sm float-left" type="submit"> Delete Profile </button>
                     </form>

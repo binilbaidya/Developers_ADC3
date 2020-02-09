@@ -98,10 +98,11 @@ def update(request, project_id):
 def delete(request,pk):# Gets id of the project to be deleted
     project_obj = Project.objects.get(pk = pk)
     uid = request.user.id
+    user = request.user
     pid = project_obj.user_id
-    if uid == pid:# if user id and and project id matches then the project is deleted
+    if uid == pid or user.is_superuser:# if user id and and project id matches then the project is deleted
         project_obj.delete()
-        messages.success(request, f'Your post has been deleted.')
+        messages.success(request, f'Post has been deleted.')
         return redirect('project:project')
     else:# message is displayed if the condition does not matchs
         messages.warning(request, f'Cannot delete this post')

@@ -12,9 +12,11 @@
 <small>Written on {{details.project_time}} by <a href="{% url 'user:view_profile' details.user_id %}"> {{details.user}} </a></small>
 <hr>
 
+{% if details.user == user or request.user.is_superuser %}
 {% if details.user == user %}
 <a href="edit/{{details.project_id}}"><button class="btn btn-primary float-left mr-3">Edit</button></a>
 <a href="bids/{{details.project_id}}"><button class="btn btn-primary float-left">Bids</button></a>
+{% endif %}
 <form action="{% url 'project:delete' details.pk %}" action="POST">
 	{% csrf_token %}
 	<button class="btn btn-danger float-right">Delete</button>
