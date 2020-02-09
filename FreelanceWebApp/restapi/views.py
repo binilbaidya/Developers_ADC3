@@ -68,3 +68,4 @@ def project_objects_pagination(request, page_num, num_data):
 		"projects":list(project.values("id", "project_title", "project_description", "project_type", "project_status"))
 	}
 	return JsonResponse(dict)
+

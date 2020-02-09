@@ -10,11 +10,9 @@ class PaymentTest(TestCase):
 
     def setUp(self):
         User.objects.create_user(username='john', email='jlennon@beatles.com', password='glass onion')
-        Payment.objects.create(payment_id=None,user_id=1,payment_amount=100,payment_details="for web project")
-        Payment.objects.create(payment_id=None,user_id=1,payment_amount=200,payment_details="for game project")
+        User.objects.create_user(username='hem', email='hem@hem.com', password='onion')
+        Payment.objects.create(payment_id=None,user_id=1,pay_to_id=2,payment_amount=100,payment_details="for web project",payment_status=False)
 
     def test_payment(self):
         p1 = Payment.objects.get(payment_details='for web project')
-        p2 = Payment.objects.get(payment_details='for game project')
         self.assertEqual(p1.payment_details,"for web project")
-        self.assertEqual(p2.payment_details,"for system project")

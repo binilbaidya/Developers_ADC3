@@ -12,8 +12,11 @@ class ProjectTest(TestCase):
         Project.objects.create(project_id=1,project_title="designing",project_description="This is designing project",project_status=True, project_type="designing",user_id=1)
         Project.objects.create(project_id=2,project_title="game development",project_description="This is game development project",project_status=True, project_type="game development",user_id=1)
 
-    def test_project(self):
+    def test_project1(self):
         p1 = Project.objects.get(project_title='designing')
-        p2 = Project.objects.get(project_title='game development')
         self.assertEqual(p1.project_title,"designing")
+
+    def test_project2(self):
+        p2 = Project.objects.get(project_title='game development')
         self.assertEqual(p2.project_title,"game")
+
