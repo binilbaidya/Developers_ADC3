@@ -9,4 +9,4 @@ class Form(forms.ModelForm):
 class updateForm(forms.ModelForm):
     class Meta:
         model = Project
-        fields = ('project_title', 'project_description', 'project_type','project_status')
+        fields = ('project_title', 'project_description', 'project_type','availability_status')

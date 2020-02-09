@@ -14,7 +14,7 @@ from project.paginations import pagination
 def project(request):
 
     template = "project/project.html"
-    object_list = Project.objects.filter(project_status__contains=1).order_by('-project_time')#latest projects are shown according to the latest time
+    object_list = Project.objects.filter(availability_status__contains=1).order_by('-project_time')#latest projects are shown according to the latest time
 
     pages = pagination(request, object_list, 2)
 
@@ -46,7 +46,7 @@ def search(request):
     if query:
         results = Project.objects.filter(Q(project_title__icontains=query) | Q(project_description__icontains=query) | Q(project_type__icontains=query))
     else:# if not authenticated he/she is redirected to welcome page
-        results = Project.objects.filter(project_status__contains=1)
+        results = Project.objects.filter(availability_status__contains=1)
     pages = pagination(request, results, 1)
     context = {
         'items': pages[0],
@@ -90,7 +90,8 @@ def update(request, project_id):
             "uForm": uForm,
         }
         return render(request, 'project/update.html', context)
-    else:# else it stays on the current page
+    else:# else it redirects to the projects page
+        messages.warning(request, f'Cannot edit this post')
         return redirect('project:project')
 
 # Deleting a project
@@ -104,7 +105,7 @@ def delete(request,pk):# Gets id of the project to be deleted
         project_obj.delete()
         messages.success(request, f'Post has been deleted.')
         return redirect('project:project')
-    else:# message is displayed if the condition does not matchs
+    else:# message is displayed if the condition does not match
         messages.warning(request, f'Cannot delete this post')
         return redirect('project:project')
 

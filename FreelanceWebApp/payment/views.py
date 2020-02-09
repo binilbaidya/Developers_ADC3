@@ -15,7 +15,7 @@ def payment(request,id):
         if payment_form.is_valid():
             payment_amount = int(payment_form.cleaned_data['payment_amount'])
             funds = AppUser.objects.get(user=request.user).funds or 0
-            other_funds = AppUser.objects.get(pk=id).funds or 0
+            other_funds = AppUser.objects.get(user_id=id).funds or 0
             if funds <  payment_amount:
                 messages.success(request,f'Please add funds')
                 return redirect('user:add_funds')
@@ -27,7 +27,7 @@ def payment(request,id):
                 pay.save()
                 funds = funds - payment_amount
                 other_funds = other_funds + payment_amount
-                AppUser.objects.filter(pk=id).update(funds=other_funds)
+                AppUser.objects.filter(user_id=id).update(funds=other_funds)
                 AppUser.objects.filter(user=request.user).update(funds=funds)
                 return redirect('payment:view_payments')
     payment_form = PaymentForm()

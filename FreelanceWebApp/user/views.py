@@ -18,7 +18,7 @@ def register(request):
         user_form = UserForm(request.POST)
         # check if the form is valid
         profile_form = ProfileForm(request.POST,request.FILES)
-        if user_form.is_valid() and profile_form.is_valid():
+        if user_form.is_valid() and profile_form.is_valid() and user_form.cleaned_data['password'] == user_form.cleaned_data['confirm_password']:
             user = user_form.save()
             appuser = profile_form.save(commit=False)
             appuser.user = user
@@ -27,6 +27,8 @@ def register(request):
             login(request, user)
             messages.success(request, f'Account created successfully for { username }!')
             return redirect('project:project')
+        elif user_form.data['password'] != user_form.data['confirm_password']:
+            messages.warning(request, f'The password does not match.')
     else:
         user_form = UserForm()
         profile_form = ProfileForm()

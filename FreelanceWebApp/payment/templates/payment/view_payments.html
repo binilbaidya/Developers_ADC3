@@ -4,20 +4,16 @@
     <div class="card-header">
         <h3>Payments</h3>
     </div>
-    {% for p in payment %}
-    {% if p.payment_status %}
     <div class="card-body">
         <ul class="list-group list-group-flush">
+            {% for p in payment %}
             {% if request.user.id == p.user.id or request.user.id == p.pay_to.id%}
                 <li class="list-group-item">
-                    {{forloop.counter}}. {{p.user}} has paid  Rs. {{p.payment_amount}} to {{p.pay_to}}
+                    {{forloop.counter}}. <a href="{% url 'user:view_profile' p.user_id %}">{{p.user}}</a> has paid  Rs. {{p.payment_amount}} to <a href="{% url 'user:view_profile' p.pay_to_id %}">{{p.pay_to}}</a>
                 </li>
-            {% else %}
-                <h5>No Payments</h5>
             {% endif %}
+            {% endfor %}
         </ul>
     </div>
-    {% endif %}
-    {% endfor %}
 </div>
 {% endblock %}

@@ -3,7 +3,9 @@ from user.models import AppUser
 from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
+    email = forms.EmailField(required=True)
     password = forms.CharField(widget = forms.PasswordInput)
+    confirm_password = forms.CharField(widget = forms.PasswordInput)
     class Meta:
         model = User
         fields = ['first_name', 'last_name','username','email','password']
