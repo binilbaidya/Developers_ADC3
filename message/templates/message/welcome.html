@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    #bg{
+        background: url('static/img/welcome_bg.JPG') no-repeat;
+        min-height: 980px;
+        background-size: cover;
+        background-attachment: fixed;
+        overflow: hidden;
+    }
+</style>
+<body id="bg">
+    <div class="container">
+        <h1 class="title text-center">
+            <strong>Get Started As A Freelancer <br>Or<br> Get Your Things Done</strong>
+        </h1>
+        {% if not user.is_authenticated %}
+        <div class="text-center mt-4">
+            <a href="../login"><button class="btn btn-primary btn-large" style="margin-right: 50px;">Login</button></a>
+            <a href="../register"><button class="btn btn-success btn-large">Register</button></a>
+        </div>
+        {% else %}
+        <div class="text-center mt-4">
+            <a href="{% url 'project:project' %}"><button class="btn btn-primary btn-large" style="margin-right: 50px;">Project</button></a>
+            <a href="{% url 'user:view_profile' user.id %}"><button class="btn btn-success btn-large">Profile</button></a>
+        </div>
+        {% endif %}
+    </div>
+</body>
+{% endblock %}

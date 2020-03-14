@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<title>Update Project</title>
+<a href="../{{ project.project_id }}" class="btn btn-light btn-sm mb-4">Go Back</a>
+<form method="POST">
+    {% csrf_token %}
+       {{ uForm | crispy }}
+        <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
+{% endblock %}

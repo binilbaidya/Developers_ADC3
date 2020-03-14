@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<title>Project</title>
+
+<div class="row">
+    <div class="col-md-8">
+        <a href="{% url 'project:create' %}" class="btn btn-primary btn-sm mb-3">Create Post</a>
+        {% for p in items %}
+        <div class="card">
+            <div class="card-body">
+                <a href="{% url 'project:details' p.project_id %}">
+                    <h5 class="card-title">{{p.project_title}}</h5>
+                </a>
+                <h6 class="card-subtitle mb-2 text-muted">{{p.project_time}}</h6>
+                <p class="card-text">{{p.project_description}}</p>
+            </div>
+        </div>
+        <br>
+        {% empty %}
+        <div class="card">
+            <div class="card-header">
+                Projects
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">No posts available!</h5>
+                <p class="card-text">No projects are available for now to work on, meanwhile you can create one!</p>
+            </div>
+        </div>
+        <br>
+        {% endfor %}
+
+        {% include 'project/pagination.html' %}
+    </div>
+    {% include 'project/search.html' %}
+</div>
+
+{% endblock %}

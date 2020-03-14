@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}
+View Profile
+{% endblock %}
+
+{% block content %}
+<h1 class="text-center">Profile</h1>
+
+<hr>
+<div class="row mb-5">
+    <div class="col-md-4">
+        <div class="card" style="width: 18rem;">
+            <img src="https://www.windstream.com/getmedia/b2e4e38a-7cb6-4ca9-9544-54dfeaca6304/icon_user-circle.png.aspx?width=1520&height=980&ext=.png"
+                class="card-img-top" alt="img">
+            <div class="card-body" style="margin-bottom: -20px;">
+                <h5 class="card-title">{{ detail }}</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Firstname: {{ detail.first_name }}</li>
+                <li class="list-group-item">Lastname: {{ detail.last_name }}</li>
+                <li class="list-group-item">Email: {{ detail.email }}</li>
+                <li class="list-group-item">Phone: {{ other.phone }}</li>
+                {% if other.cv == "" %}
+                <li class="list-group-item">CV: <a href="#"><legend style="font-size: medium;">No CV Found</legend></a></li>
+                {% else %}
+                <li class="list-group-item">CV:<a href="{{other.cv.url}}" download class="btn btn-primary btn-sm ml-3">Download CV</a></li>
+                {% endif %}
+                {% if not request.user.is_superuser %}
+                {% if request.user.id == detail.id %}
+                    <li class="list-group-item"> Balance : {{other.funds}}</li>
+                    <li class="list-group-item"><a href="{% url 'user:add_funds' %}"><button class="btn btn-primary btn-sm">Add Funds</button></a>
+                    <a href="{% url 'payment:view_payments' %}"><button class="btn btn-primary btn-sm">View Payment</button></a></li>
+                {% else %}
+                    <li class="list-group-item"><a href="{% url 'payment:payment' detail.id %}"><button class="btn btn-primary">Pay</button></a>
+                    <a href="{% url 'message:message' detail.id %}"><button class="btn btn-primary">Message</button></a></li>
+                {% endif %}
+                {% endif %}
+            </ul>
+
+            {% if request.user.id == detail.id or request.user.is_superuser %}
+                <div class="container">
+                {% if request.user.id == detail.id %}
+                    <a href="{% url 'user:edit_profile' user.pk %}"><button class="btn btn-primary btn-sm float-left mr-2"> Edit Profile</button></a>
+                {% endif %}
+                    <form method="POST" enctype="multipart/form-data" action="{% url 'user:delete_profile' detail.pk %}">
+                        {% csrf_token %}
+                        <button class="btn btn-danger btn-sm float-left" type="submit"> Delete Profile </button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-8">
+        <a href="{% url 'project:create' %}" class="btn btn-primary btn-sm float-right mb-3">Create Post</a>
+        <legend>Projects:</legend>
+        <div class="clearfix"></div>
+        {% for p in items %}
+        <div class="card">
+            <div class="card-body">
+                <a href="{% url 'project:details' p.project_id %}">
+                    <h5 class="card-title">{{p.project_title}}</h5>
+                </a>
+                <h6 class="card-subtitle mb-2 text-muted">{{p.project_time}}</h6>
+                <p class="card-text">{{p.project_description}}</p>
+            </div>
+        </div>
+        <br>
+        {% empty %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">No Posts</h5>
+                <p class="card-text">You have not created any posts!</p>
+            </div>
+        </div>
+        <br>
+        {% endfor %}
+        {% include 'project/pagination.html' %}
+    </div>
+</div>
+{% endblock %}

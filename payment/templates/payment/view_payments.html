@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3>Payments</h3>
+    </div>
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            {% for p in payment %}
+            {% if request.user.id == p.user.id or request.user.id == p.pay_to.id%}
+                <li class="list-group-item">
+                    {{forloop.counter}}. <a href="{% url 'user:view_profile' p.user_id %}">{{p.user}}</a> has paid  Rs. {{p.payment_amount}} to <a href="{% url 'user:view_profile' p.pay_to_id %}">{{p.pay_to}}</a>
+                </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

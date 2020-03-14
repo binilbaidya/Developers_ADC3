@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<title>Bids Received</title>
+
+<a href="/project" class="btn btn-light btn-sm mb-4">Go Back</a>
+
+{% for b in bids %}
+{% if b.project_id == project.project_id %}
+<legend style="font-size: large;"><a href="{% url 'user:view_profile' b.user.id %}">{{b.user}}</a> applied for {{project.project_title}} project</legend>
+<hr>
+{% endif %}
+{% empty %}
+<hr>
+<legend>You have no bids</legend>
+<hr>
+{% endfor %}
+{% endblock %}
